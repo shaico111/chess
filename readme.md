@@ -36,7 +36,3 @@ gcc -o chessSim main.c chessGameLogic.c pathFinding.c displayFunctions.c memoryM
 
 - **Interactive Input:** The user can input a starting position for the knight.
 - **Path Simulation:** The application calculates and displays possible paths or a specific path that covers all squares, based on user choice.
-
-## Acknowledgments
-
-We thank our peers and instructors for their guidance and support throughout the semester.
