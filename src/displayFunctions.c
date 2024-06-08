@@ -6,7 +6,10 @@
  */
 
 #include "prototypes.h"
-
 void display(chessPosList *list) {
     // \TODO: Section 2 - Display the chess board and the current knight's path
+}
+
+
+void removeDuplicates(chessPosList *list) {
 }

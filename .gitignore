@@ -52,5 +52,5 @@ Mkfile.old
 dkms.conf
 
 # Mac Files
-.DS_Store
-Docs/.DS_Store
+*.DS_Store
+.idea/

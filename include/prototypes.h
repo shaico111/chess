@@ -10,7 +10,7 @@
 
 #include "typedefs.h"  // Include type definitions for function prototypes.
 
-// Function prototypes for chess position management.
+// Function prototypes
 chessPosArray ***validKnightMoves(void);
 void display(chessPosList *list);
 
