@@ -11,11 +11,11 @@
 #include "typedefs.h"  // Include type definitions for function prototypes.
 
 // Function prototypes
-chessPosArray ***validKnightMoves(void);
 void display(chessPosList *list);
-
-// Function prototypes for path tree calculations.
+void removeDuplicates(chessPosList *list);
+void manageMemory(void);
 pathTree findAllPossibleKnightPaths(chessPos *startingPosition);
 chessPosList *findKnightPathCoveringAllBoard(pathTree *pathTree);
+chessPosArray ***validKnightMoves(void);
 
 #endif // PROTOTYPES_H
