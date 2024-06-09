@@ -15,9 +15,9 @@
 
 
 // Function Implementations
-#include "../src/displayFunctions.c"
-#include "../src/chessGameLogic.c"
-#include "../src/dataManagement.c"
-#include "../src/pathFinding.c"
+//#include "../src/displayFunctions.c"
+//#include "../src/chessGameLogic.c"
+//#include "../src/dataManagement.c"
+//#include "../src/pathFinding.c"
 
 #endif // MAIN_H

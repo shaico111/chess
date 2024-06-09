@@ -11,13 +11,43 @@
 
 #include "../include/macros.h"
 #include "../include/typedefs.h"
+#include "../include/prototypes.h"
 
-void InitializeMatrix(int** board, int rows, int cols, int value) {
+// Function to initialize the matrix using calloc and fill it with a specified value
+int** InitializeMatrix(int rows, int cols, int value) {
+    // Allocate memory for the rows
+    int** board = (int**)calloc(rows, sizeof(int*));
+    if (board == NULL) {
+        fprintf(stderr, "Memory allocation failed\n");
+        exit(1);
+    }
+
+    // Allocate memory for the columns in each row and fill with the specified value
     for (int row = 0; row < rows; row++) {
+        board[row] = (int*)calloc(cols, sizeof(int));
+        if (board[row] == NULL) {
+            fprintf(stderr, "Memory allocation failed\n");
+            // Free previously allocated memory in case of failure
+            for (int i = 0; i < row; i++) {
+                free(board[i]);
+            }
+            free(board);
+            exit(1);
+        }
         for (int col = 0; col < cols; col++) {
-            board[col][row] = value;
+            board[row][col] = value;
         }
     }
+
+    return board;
+}
+
+// Function to free the allocated matrix
+void FreeMatrix(int** board, int rows) {
+    for (int row = 0; row < rows; row++) {
+        free(board[row]);
+    }
+    free(board);
 }
 
 void RemoveCellFromList(chessPosList *list, chessPosCell *prevCell, chessPosCell *cellToRemove) {

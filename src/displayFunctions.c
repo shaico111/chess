@@ -5,16 +5,13 @@
  * This module handles the visual representation of the game state.
  */
 
-#include "../include/prototypes.h"
 #include "../include/macros.h"
-#include "dataManagement.c"
+#include "../include/typedefs.h"
+#include "../include/prototypes.h"
 
 void display(chessPosList *list) {
-    int boardToPrint[BOARD_SIZE][BOARD_SIZE] = {        {0, 0, 0, 0, 0},
-                                                        {0, 0, 0, 5, 0},
-                                                        {0, 0, 0, 0, 0},
-                                                        {0, 0, 0, 0, 0},
-                                                        {0, 0, 0, 0, 0}};
+    int** boardToPrint = InitializeMatrix(BOARD_SIZE, BOARD_SIZE, 0);
+    HandleChessPosList(list, boardToPrint);
     printBoard(boardToPrint);
 }
 
@@ -27,7 +24,7 @@ void HandleChessPosList(chessPosList *list, int** board) {
     int row,col, cellsCounter=0;
 
     // Initialize the board with zeros
-    InitializeMatrix(board, BOARD_SIZE, BOARD_SIZE, 0);
+    InitializeMatrix(BOARD_SIZE, BOARD_SIZE, 0);
 
     // While there are items in the list
     while(currCell != NULL) {
@@ -73,14 +70,17 @@ void printTopBorder() {
     printf("\n");
 }
 
-void printRow(char boardRow[BOARD_SIZE], int row) {
+void printRow(int* boardRow, int row) {
     // Print the row letter
     printf("%c║", 'A' + row);
 
     // Print the cells in the row
     for (int col = 0; col < BOARD_SIZE; col++) {
-        printf(" %c ", boardRow[col] ? 'X' : ' ');
-        printf("║");
+        if (boardRow[col] != 0) {
+            printf(" %d ", boardRow[col]);
+        } else {
+            printf("   ");
+        }        printf("║");
     }
     printf("\n");
 }
@@ -113,7 +113,7 @@ void printBottomBorder() {
     printf("\n");
 }
 
-void printBoard(char boardToPrint[BOARD_SIZE][BOARD_SIZE]) {
+void printBoard(int** boardToPrint) {
     printColumnNumbers();
     printTopBorder();
 

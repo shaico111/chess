@@ -54,3 +54,6 @@ dkms.conf
 # Mac Files
 *.DS_Store
 .idea/
+
+# Project files
+chess

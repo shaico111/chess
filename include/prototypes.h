@@ -15,14 +15,18 @@ void display(chessPosList *list);
 void HandleChessPosList(chessPosList *list, int** board);
 void printColumnNumbers();
 void printTopBorder();
-void printRow(char boardRow[BOARD_SIZE], int row);
+void printRow(int* boardRow, int row);
 void printRowSeparator();
 void printBottomBorder();
-void printBoard(char boardToPrint[BOARD_SIZE][BOARD_SIZE]);
+void printBoard(int** boardToPrint);
 pathTree findAllPossibleKnightPaths(chessPos *startingPosition);
 chessPosList *findKnightPathCoveringAllBoard(pathTree *pathTree);
+chessPosCell *createNewCell(char pos[2], chessPosCell *next);
+void insertCellToEndList(chessPosList *list, char pos[2]);
+chessPosList *createSampleList();
 chessPosArray ***validKnightMoves(void);
-void InitializeMatrix(int** board, int rows, int cols, int value);
+void FreeMatrix(int** board, int rows);
 void RemoveCellFromList(chessPosList *list, chessPosCell *prevCell, chessPosCell *cellToRemove);
+int** InitializeMatrix(int rows, int cols, int value);
 
 #endif // PROTOTYPES_H
