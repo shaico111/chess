@@ -7,7 +7,7 @@
  * Section #5 (Main)
  */
 
-#include "main.h"
+#include "../include/main.h"
 
 int main(void) {
     // Prompt user for starting position

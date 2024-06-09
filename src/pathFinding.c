@@ -5,7 +5,7 @@
  * These include finding all possible paths and optimal paths covering all squares.
  */
 
-#include "prototypes.h"
+#include "../include/typedefs.h"
 
 pathTree findAllPossibleKnightPaths(chessPos *startingPosition) {
     // \TODO: Section 3 - Build a tree of all paths starting from the given position

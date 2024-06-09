@@ -12,10 +12,17 @@
 
 // Function prototypes
 void display(chessPosList *list);
-void removeDuplicates(chessPosList *list);
-void manageMemory(void);
+void HandleChessPosList(chessPosList *list, int** board);
+void printColumnNumbers();
+void printTopBorder();
+void printRow(char boardRow[BOARD_SIZE], int row);
+void printRowSeparator();
+void printBottomBorder();
+void printBoard(char boardToPrint[BOARD_SIZE][BOARD_SIZE]);
 pathTree findAllPossibleKnightPaths(chessPos *startingPosition);
 chessPosList *findKnightPathCoveringAllBoard(pathTree *pathTree);
 chessPosArray ***validKnightMoves(void);
+void InitializeMatrix(int** board, int rows, int cols, int value);
+void RemoveCellFromList(chessPosList *list, chessPosCell *prevCell, chessPosCell *cellToRemove);
 
 #endif // PROTOTYPES_H

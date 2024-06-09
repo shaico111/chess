@@ -8,6 +8,8 @@
 #ifndef TYPEDEFS_H
 #define TYPEDEFS_H
 
+typedef int BOOL; // Defines a boolean type for the Hash typedef
+
 typedef char chessPos[2];  // Stores a position on the chessboard as two characters.
 
 typedef struct _chessPosArray {
@@ -43,5 +45,6 @@ typedef struct _treeNodeList {
 typedef struct _pathTree {
     treeNode *root;  // Root of the path tree.
 } pathTree;
+
 
 #endif // TYPEDEFS_H

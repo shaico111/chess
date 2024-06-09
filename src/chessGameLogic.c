@@ -5,8 +5,8 @@
  * Contains functions to compute valid moves and update board state.
  */
 
-#include "prototypes.h"
-
+#include "../include/typedefs.h"
+#include "macros.h"
 chessPosArray ***validKnightMoves(void) {
     // \TODO: Section 1 - Calculate valid moves for a knight from a given position
     return NULL;  // Placeholder return
