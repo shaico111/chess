@@ -10,8 +10,6 @@
 #include <stdlib.h>    // Include standard library.
 #include <stdio.h>
 
-#define TRUE 1       // Represents a positive value for the BOOLEAN typedef
-#define FALSE 0      // Represents a negative value for the BOOLEAN typedef
 #define BOARD_SIZE 5 // Board width and height
 
 #define CHAR_POSITION(c) ((c) - 'A' + 1) // Returns character's alphabet position.

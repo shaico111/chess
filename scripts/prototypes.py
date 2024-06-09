@@ -3,7 +3,11 @@ import os
 
 def extract_prototypes(src_directory):
     prototypes = []
-    function_pattern = re.compile(r"^[\w\s\*]+\s+\**[\w]+\s*\([^)]*\)\s*\{", re.MULTILINE)
+    # Improved regular expression to match function prototypes
+    function_pattern = re.compile(
+        r"^\s*([a-zA-Z_][a-zA-Z0-9_\*\s]*\s+\**[a-zA-Z_][a-zA-Z0-9_\*\s]*\s*\([^)]*\)\s*)\{",
+        re.MULTILINE
+    )
 
     for subdir, dirs, files in os.walk(src_directory):
         for file in files:
@@ -14,7 +18,9 @@ def extract_prototypes(src_directory):
                     functions = function_pattern.findall(content)
                     for func in functions:
                         print(f"Found function: {func}")  # Debug print
-                    prototypes.extend(functions)
+                        # Replace '{' with ';' and strip any trailing spaces/newlines
+                        proto = func.strip().rstrip('{').strip() + ";"
+                        prototypes.append(proto)
 
     return prototypes
 
@@ -34,10 +40,9 @@ def update_prototypes_h(header_path, prototypes):
 
     prototype_set = set()
     for proto in prototypes:
-        proto = proto.rstrip('{').strip()
-        if not proto.startswith("int main") and proto + ";" not in prototype_set:
-            prototype_set.add(proto + ";")
-            header_content.append(proto + ";\n")
+        if not proto.startswith("int main") and proto not in prototype_set:
+            prototype_set.add(proto)
+            header_content.append(proto + "\n")
 
     header_content.append("\n#endif // PROTOTYPES_H\n")
 

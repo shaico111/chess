@@ -25,8 +25,8 @@ chessPosCell *createNewCell(char pos[2], chessPosCell *next);
 void insertCellToEndList(chessPosList *list, char pos[2]);
 chessPosList *createSampleList();
 chessPosArray ***validKnightMoves(void);
+int** InitializeMatrix(int rows, int cols, int value);
 void FreeMatrix(int** board, int rows);
 void RemoveCellFromList(chessPosList *list, chessPosCell *prevCell, chessPosCell *cellToRemove);
-int** InitializeMatrix(int rows, int cols, int value);
 
 #endif // PROTOTYPES_H
