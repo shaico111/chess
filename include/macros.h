@@ -11,6 +11,11 @@
 #include <stdio.h>
 
 #define BOARD_SIZE 5 // Board width and height
+#define TABLE 8
+#define LEAPABOVE 2
+#define LEAPBELOW -2
+#define RIGHT 1
+#define LEFT -1
 
 #define CHAR_POSITION(c) ((c) - 'A' + 1) // Returns character's alphabet position.
 #define CHAR_TO_DIGIT(c) ((c) - '0') // Converts a character digit to its numeric value.
