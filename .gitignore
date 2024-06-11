@@ -57,3 +57,5 @@ dkms.conf
 
 # Project files
 chess
+.vs/ProjectSettings.json
+/.vs
