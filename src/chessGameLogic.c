@@ -10,7 +10,7 @@
 #include "../include/prototypes.h"
 chessPosArray*** validKnightMoves(void)
 {
-    chessPosArray*** board = (chessPosArray***)malloc(TABLE * sizeof(chessPosArray**)); //allocate for table
+    chessPosArray*** board = (chessPosArray***)malloc(BOARD_SIZE * sizeof(chessPosArray**)); //allocate for BOARD_SIZE
     int i, row, col, count, move;
 
     if (board == NULL) //Allocation checkup.
@@ -19,7 +19,7 @@ chessPosArray*** validKnightMoves(void)
         exit(1);
     }
 
-    for (i = 0; i < TABLE; i++) //allocate for each.
+    for (i = 0; i < BOARD_SIZE; i++) //allocate for each.
     {
         board[i] = (chessPosArray**)malloc(sizeof(chessPosArray*));
 
@@ -33,9 +33,9 @@ chessPosArray*** validKnightMoves(void)
     int baseMoves[8][2] = { {LEAPABOVE, RIGHT} ,{LEAPABOVE, LEFT} ,{LEAPBELOW, RIGHT}, {LEAPBELOW, LEFT},
         {RIGHT, LEAPABOVE},{RIGHT, LEAPBELOW}, {LEFT, LEAPABOVE}, {RIGHT, LEAPBELOW} }; //general basic knight moves.
 
-    for (row = 0; row < TABLE; row++)     //Iterate on each row { (A,0) -> (A, 8) }
+    for (row = 0; row < BOARD_SIZE; row++)     //Iterate on each row { (A,0) -> (A, 8) }
     {
-        for (col = 0; col < TABLE; col++) //Iterate on each col { (A, 0) -> (H, 0) }
+        for (col = 0; col < BOARD_SIZE; col++) //Iterate on each col { (A, 0) -> (H, 0) }
         {
             chessPos* validPositions = (chessPos*)malloc(8 * sizeof(chessPos)); //Allocate (for 8 moves tops).
             count = 0;
@@ -51,7 +51,7 @@ chessPosArray*** validKnightMoves(void)
                 int newRow = row + baseMoves[move][0]; //calculation according to base moves (each move consists of change in row and col, therefor 2 actions.
                 int newCol = col + baseMoves[move][1];
 
-                if (newRow >= 0 && newRow < TABLE && newCol >= 0 && newCol < TABLE) //Add the data if the move is valid.
+                if (newRow >= 0 && newRow < BOARD_SIZE && newCol >= 0 && newCol < BOARD_SIZE) //Add the data if the move is valid.
                 {
                     validPositions[count][0] = 'A' + newRow;
                     validPositions[count][1] = '1' + newCol;
@@ -86,9 +86,9 @@ void getFreed(chessPosArray*** validKnightMoves) //free...
 {
     int i, j;
 
-    for (i = 0; i < TABLE; i++)
+    for (i = 0; i < BOARD_SIZE; i++)
     {
-        for (j = 0; j < TABLE; j++)
+        for (j = 0; j < BOARD_SIZE; j++)
         {
             free(validKnightMoves[i][j]->positions);
             free(validKnightMoves[i][j]);
