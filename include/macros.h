@@ -16,6 +16,8 @@
 #define LEAPBELOW -2
 #define RIGHT 1
 #define LEFT -1
+#define TRUE 1
+#define FALSE 0
 
 #define CHAR_POSITION(c) ((c) - 'A' + 1) // Returns character's alphabet position.
 #define CHAR_TO_DIGIT(c) ((c) - '0') // Converts a character digit to its numeric value.
