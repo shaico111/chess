@@ -8,10 +8,11 @@
 #include "../include/macros.h"
 #include "../include/typedefs.h"
 #include "../include/prototypes.h"
-chessPosArray*** validKnightMoves(void)
+
+chessPosArray*** validKnightMoves()
 {
     chessPosArray*** board = (chessPosArray***)malloc(BOARD_SIZE * sizeof(chessPosArray**)); //allocate for BOARD_SIZE
-    int i, row, col, count, move;
+    int i, row, col, count, move, newRow, newCol;
 
     if (board == NULL) //Allocation checkup.
     {
@@ -19,9 +20,9 @@ chessPosArray*** validKnightMoves(void)
         exit(1);
     }
 
-    for (i = 0; i < BOARD_SIZE; i++) //allocate for each.
+    for (i = 0; i < BOARD_SIZE; i++)
     {
-        board[i] = (chessPosArray**)malloc(sizeof(chessPosArray*));
+        board[i] = (chessPosArray**)malloc(BOARD_SIZE * sizeof(chessPosArray*));
 
         if (board[i] == NULL) //checkup.
         {
@@ -33,11 +34,12 @@ chessPosArray*** validKnightMoves(void)
     int baseMoves[8][2] = { {LEAPABOVE, RIGHT} ,{LEAPABOVE, LEFT} ,{LEAPBELOW, RIGHT}, {LEAPBELOW, LEFT},
         {RIGHT, LEAPABOVE},{RIGHT, LEAPBELOW}, {LEFT, LEAPABOVE}, {RIGHT, LEAPBELOW} }; //general basic knight moves.
 
-    for (row = 0; row < BOARD_SIZE; row++)     //Iterate on each row { (A,0) -> (A, 8) }
+
+    for (row = 0; row < BOARD_SIZE; row++)
     {
-        for (col = 0; col < BOARD_SIZE; col++) //Iterate on each col { (A, 0) -> (H, 0) }
+        for (col = 0; col < BOARD_SIZE; col++)
         {
-            chessPos* validPositions = (chessPos*)malloc(8 * sizeof(chessPos)); //Allocate (for 8 moves tops).
+            chessPos* validPositions = (chessPos*)malloc(8 * sizeof(chessPos));
             count = 0;
 
             if (validPositions == NULL) //Allocation checkup
@@ -46,20 +48,20 @@ chessPosArray*** validKnightMoves(void)
                 exit(1);
             }
 
-            for (move = 0; move < 8; move++) //Iterate on the 8 possible moves.
+            for (move = 0; move < 8; move++)
             {
-                int newRow = row + baseMoves[move][0]; //calculation according to base moves (each move consists of change in row and col, therefor 2 actions.
-                int newCol = col + baseMoves[move][1];
+                newRow = row + baseMoves[move][0];
+                newCol = col + baseMoves[move][1];
 
-                if (newRow >= 0 && newRow < BOARD_SIZE && newCol >= 0 && newCol < BOARD_SIZE) //Add the data if the move is valid.
+                if (newRow >= 0 && newRow < BOARD_SIZE && newCol >= 0 && newCol < BOARD_SIZE)
                 {
                     validPositions[count][0] = 'A' + newRow;
                     validPositions[count][1] = '1' + newCol;
-                    count++;                                                     //move counter each time we notice a possible move.
+                    count++;
                 }
             }
 
-            validPositions = (chessPos*)realloc(validPositions, count * sizeof(chessPos)); //realloc from the 8, to the exact move counter;
+            validPositions = (chessPos*)realloc(validPositions, count * sizeof(chessPos));
 
             chessPosArray* posArray = (chessPosArray*)malloc(sizeof(chessPosArray));
 
@@ -69,19 +71,16 @@ chessPosArray*** validKnightMoves(void)
                 exit(1);
             }
 
-            posArray->size = count;              //save the amount of moves and validPos in teh struct.
+            posArray->size = count;
             posArray->positions = validPositions;
 
-            board[row][col] = posArray; //"connect" it before keeping iterating.
+            board[row][col] = posArray;
         }
     }
-    return board; //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // BEN FIX NOTES BEFORE SENDING THE PROJECT. 
-    // NOTES NEED
-    //FORMAL MANNER.
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // MAYBE EVEN ADD AN ALLOCATION CHECKUP FUNC
+
+    return board;
 }
+
 void getFreed(chessPosArray*** validKnightMoves) //free...
 {
     int i, j;
