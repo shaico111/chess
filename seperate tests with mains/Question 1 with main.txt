@@ -1,13 +1,20 @@
-/**
- * File: chessGameLogic.c
- * ----------------------
- * Implements the game logic for chess, focusing on knight movements.
- * Contains functions to compute valid moves and update board state.
- */
+#include <stdio.h>
+#include <stdlib.h>
 
-#include "../include/macros.h"
-#include "../include/typedefs.h"
-#include "../include/prototypes.h"
+typedef char chessPos[2];
+
+typedef struct _chessPosArray
+{
+    unsigned int size;
+    chessPos* positions;
+} chessPosArray;
+
+#define BOARD_SIZE 5
+#define LEAPABOVE 2
+#define LEAPBELOW -2
+#define RIGHT 1
+#define LEFT -1
+
 
 chessPosArray*** validKnightMoves()
 {
@@ -95,4 +102,25 @@ void getFreed(chessPosArray*** validKnightMoves) //free...
         free(validKnightMoves[i]);
     }
     free(validKnightMoves);
+}
+
+int main()
+{
+    chessPosArray*** knightMoves = validKnightMoves();
+
+    int row = 4 - 1;
+    int col = 'E' - 'A';  //Shay these are E4, if u wanna select any other, you do not change the minus, because obv 'A' isnt a number.
+    //we substract the ascii value to get to our col position.
+
+    chessPosArray* movesFromE4 = knightMoves[col][row];
+
+    printf("Valid moves from E4:\n");
+
+    for (int i = 0; i < movesFromE4->size; i++)
+    {
+        printf("%c%c\n", movesFromE4->positions[i][0], movesFromE4->positions[i][1]);
+    }
+
+    getFreed(knightMoves);
+    return 0;
 }
