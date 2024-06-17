@@ -10,7 +10,7 @@
 #include <stdlib.h>    // Include standard library.
 #include <stdio.h>
 
-#define BOARD_SIZE 8
+#define BOARD_SIZE 5
 #define LEAPABOVE 2
 #define LEAPBELOW -2
 #define RIGHT 1

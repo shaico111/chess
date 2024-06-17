@@ -10,6 +10,8 @@
 
 #include "typedefs.h"  // Include type definitions for function prototypes.
 
+#include "macros.h"  // Include type macros for function prototypes.
+
 // Function prototypes
 void display(chessPosList *list);
 void HandleChessPosList(chessPosList *list, int** board);
@@ -19,16 +21,19 @@ void printRow(int* boardRow, int row);
 void printRowSeparator();
 void printBottomBorder();
 void printBoard(int** boardToPrint);
-pathTree findAllPossibleKnightPaths(chessPos *startingPosition);
-chessPosCell *createNewChessPosCell(chessPos pos);
-void appendChessPosToList(chessPosList *lst, chessPos pos);
-BOOL isWithinBoard(int row, int col);
-BOOL findKnightTour(chessPos currentPos, int moveCount, BOOL visited[5][5], chessPosList *path, pathTree *path_tree);
+void logPosition(const char* prefix, chessPos position);
+BOOL isPositionValid(chessPos position);
+treeNodeList* generateValidMoves(chessPos position, int depth, BOOL visited[BOARD_SIZE][BOARD_SIZE]);
+void printPath(chessPosList* path);
+static BOOL allPositionsCovered(BOOL visited[BOARD_SIZE][BOARD_SIZE]);
+static BOOL findPath(treeNode *node, BOOL visited[BOARD_SIZE][BOARD_SIZE], chessPosList *path, chessPosArray ***moves);
 chessPosList *findKnightPathCoveringAllBoard(pathTree *path_tree);
-chessPosCell *createNewCell(char pos[2], chessPosCell *next);
-void insertCellToEndList(chessPosList *list, char pos[2]);
-chessPosList *createSampleList();
-chessPosArray*** validKnightMoves(void);
+BOOL addPositionToPath(chessPosList* path, chessPos position);
+void freePath(chessPosList* path);
+void removeLastPositionFromPath(chessPosList* path);
+pathTree* initializePathTreeWithRoot(chessPos initialPosition);
+chessPosArray*** validKnightMoves();
+void getFreed(chessPosArray*** validKnightMoves);
 int** InitializeMatrix(int rows, int cols, int value);
 void FreeMatrix(int** board, int rows);
 void RemoveCellFromList(chessPosList *list, chessPosCell *prevCell, chessPosCell *cellToRemove);

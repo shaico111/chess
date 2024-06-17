@@ -35,6 +35,7 @@ def update_prototypes_h(header_path, prototypes):
         "#ifndef PROTOTYPES_H\n",
         "#define PROTOTYPES_H\n\n",
         "#include \"typedefs.h\"  // Include type definitions for function prototypes.\n\n",
+        "#include \"macros.h\"  // Include type macros for function prototypes.\n\n",
         "// Function prototypes\n"
     ]
 

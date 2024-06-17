@@ -9,8 +9,7 @@
 #include "../include/typedefs.h"
 #include "../include/prototypes.h"
 
-chessPosArray*** validKnightMoves()
-{
+chessPosArray*** validKnightMoves() {
     chessPosArray*** board = (chessPosArray***)malloc(BOARD_SIZE * sizeof(chessPosArray**)); //allocate for BOARD_SIZE
     int i, row, col, count, move, newRow, newCol;
 
@@ -81,8 +80,7 @@ chessPosArray*** validKnightMoves()
     return board;
 }
 
-void getFreed(chessPosArray*** validKnightMoves) //free...
-{
+void getFreed(chessPosArray*** validKnightMoves) {
     int i, j;
 
     for (i = 0; i < BOARD_SIZE; i++)
