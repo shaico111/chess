@@ -1,0 +1,256 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+
+#define BOARD_SIZE 5
+#define NUM_KNIGHT_MOVES 8
+
+typedef char chessPos[2];
+
+typedef struct _chessPosArray
+{
+    unsigned int size;
+    chessPos* positions;
+} chessPosArray;
+
+typedef struct _treeNodeListCell treeNodeListCell;
+typedef struct _treeNode treeNode;
+
+typedef struct _treeNodeList
+{
+    treeNodeListCell* head;
+    treeNodeListCell* tail;
+} treeNodeList;
+
+struct _treeNode
+{
+    chessPos position;
+    treeNodeList next_possible_positions;
+};
+
+struct _treeNodeListCell {
+    treeNode* node;
+    treeNodeListCell* next;
+};
+
+typedef struct _pathTree {
+    treeNode* root;
+} pathTree;
+
+// Function declarations
+chessPosArray*** validKnightMoves(void);
+pathTree findAllPossibleKnightPaths(chessPos* startingPos);
+treeNode* createNode(chessPos pos);
+void freePathTree(pathTree tree);
+void freeTreeNode(treeNode* node);
+void addNodeToList(treeNodeList* list, treeNode* node);
+bool posInPath(chessPos* path, unsigned int pathSize, chessPos pos);
+void buildPathTree(treeNode* curr, chessPosArray*** knightMoves, bool visited[BOARD_SIZE][BOARD_SIZE], chessPos* path, unsigned int pathSize);
+
+unsigned int nodeCount = 0;
+
+int baseMoves[NUM_KNIGHT_MOVES][2] = //The leap above leap below part... it's a psuedo tho
+{
+    {2, 1}, {2, -1}, {-2, 1}, {-2, -1},
+    {1, 2}, {1, -2}, {-1, 2}, {-1, -2}
+};
+
+int main()
+{
+    chessPos start = { 'A', '1' };
+    pathTree tree = findAllPossibleKnightPaths(&start);
+
+    printf("Total num of possible moves: %d\n", nodeCount);
+    freePathTree(tree);
+
+    return 0;
+}
+
+chessPosArray*** validKnightMoves(void)
+{
+    chessPosArray*** board = (chessPosArray***)malloc(BOARD_SIZE * sizeof(chessPosArray**));
+    if (board == NULL)
+    {
+        printf("Allocation error. #01\n");
+        exit(1);
+    }
+
+    for (int row = 0; row < BOARD_SIZE; row++)
+    {
+        board[row] = (chessPosArray**)malloc(BOARD_SIZE * sizeof(chessPosArray*));
+        if (board[row] == NULL)
+        {
+            printf("Allocation error. #02\n");
+            exit(1);
+        }
+
+        for (int col = 0; col < BOARD_SIZE; col++)
+        {
+            chessPos* validPositions = (chessPos*)malloc(NUM_KNIGHT_MOVES * sizeof(chessPos));
+            int count = 0;
+
+            if (validPositions == NULL)
+            {
+                printf("Allocation error. #03\n");
+                exit(1);
+            }
+
+            for (int move = 0; move < NUM_KNIGHT_MOVES; move++)
+            {
+                int newRow = row + baseMoves[move][0];
+                int newCol = col + baseMoves[move][1];
+
+                if (newRow >= 0 && newRow < BOARD_SIZE && newCol >= 0 && newCol < BOARD_SIZE)
+                {
+                    validPositions[count][0] = 'A' + newRow;
+                    validPositions[count][1] = '1' + newCol;
+                    count++;
+                }
+            }
+
+            validPositions = (chessPos*)realloc(validPositions, count * sizeof(chessPos));
+            chessPosArray* posArray = (chessPosArray*)malloc(sizeof(chessPosArray));
+            if (posArray == NULL)
+            {
+                printf("Allocation error. #04\n");
+                exit(1);
+            }
+
+            posArray->size = count;
+            posArray->positions = validPositions;
+            board[row][col] = posArray;
+        }
+    }
+    return board;
+}
+pathTree findAllPossibleKnightPaths(chessPos* startingPos)
+{
+    int i, j;
+    chessPosArray*** knightMoves = validKnightMoves();
+    pathTree tr;
+    tr.root = createNode(*startingPos);
+
+    chessPos path[BOARD_SIZE * BOARD_SIZE];
+    path[0][0] = startingPos[0][0];
+    path[0][1] = startingPos[0][1];
+
+    bool visited[BOARD_SIZE][BOARD_SIZE] = { false };
+
+    buildPathTree(tr.root, knightMoves, visited, path, 1);
+
+    // Free the memory allocated for knight moves
+    for (i = 0; i < BOARD_SIZE; i++)
+    {
+        for (j = 0; j < BOARD_SIZE; j++)
+        {
+            free(knightMoves[i][j]->positions);
+            free(knightMoves[i][j]);
+        }
+        free(knightMoves[i]);
+    }
+    free(knightMoves);
+
+    return tr;
+}
+treeNode* createNode(chessPos pos) //Creates a new tree node.
+{
+    treeNode* node = (treeNode*)malloc(sizeof(treeNode));
+
+    if (node == NULL)
+    {
+        printf("Allocation error. #05\n");
+        exit(1);
+    }
+
+    node->position[0] = pos[0];
+    node->position[1] = pos[1];
+    node->next_possible_positions.head = NULL;
+    node->next_possible_positions.tail = NULL;
+    nodeCount++; // <----- remove before submition
+    return node;
+}
+void freePathTree(pathTree tree)
+{
+    freeTreeNode(tree.root);
+}
+void freeTreeNode(treeNode* node)
+{
+    if (node == NULL)
+    {
+        return;
+    }
+
+    treeNodeListCell* curr = node->next_possible_positions.head;
+
+    while (curr != NULL)
+    {
+        treeNodeListCell* next = curr->next;
+        freeTreeNode(curr->node);
+        free(curr);
+        curr = next;
+    }
+    free(node);
+}
+void addNodeToList(treeNodeList* lst, treeNode* node) //Adds a node to the linked lst
+{
+    treeNodeListCell* newCell = (treeNodeListCell*)malloc(sizeof(treeNodeListCell));
+    if (newCell == NULL)
+    {
+        printf("Allocation error. #06\n");
+        exit(1);
+    }
+    newCell->node = node;
+    newCell->next = NULL;
+
+    if (lst->head == NULL)
+    {
+        lst->head = newCell;
+        lst->tail = newCell;
+    }
+    else
+    {
+        lst->tail->next = newCell;
+        lst->tail = newCell;
+    }
+}
+bool posInPath(chessPos* path, unsigned int size, chessPos pos)
+{
+    int i;
+
+    for (i = 0; i < size; i++)
+    {
+        if (path[i][0] == pos[0] && path[i][1] == pos[1])
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+void buildPathTree(treeNode* curr, chessPosArray*** knightMoves, bool visited[BOARD_SIZE][BOARD_SIZE], chessPos* path, unsigned int pathSize)
+{
+    int row, col, i, newRow, newCol;
+    row = curr->position[0] - 'A';
+    col = curr->position[1] - '1';
+    chessPosArray* possibleMoves = knightMoves[row][col];
+
+    visited[row][col] = true;
+
+    for (i = 0; i < possibleMoves->size; i++)
+    {
+        newRow = possibleMoves->positions[i][0] - 'A';
+        newCol = possibleMoves->positions[i][1] - '1';
+
+        if (!visited[newRow][newCol])
+        {
+            treeNode* childNode = createNode(possibleMoves->positions[i]);
+            addNodeToList(&curr->next_possible_positions, childNode);
+
+            path[pathSize][0] = childNode->position[0];
+            path[pathSize][1] = childNode->position[1];
+            buildPathTree(childNode, knightMoves, visited, path, pathSize + 1);
+        }
+    }
+
+    visited[row][col] = false;
+}
