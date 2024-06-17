@@ -1,0 +1,126 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef char chessPos[2];
+
+typedef struct _chessPosArray
+{
+    unsigned int size;
+    chessPos* positions;
+} chessPosArray;
+
+#define BOARD_SIZE 5
+#define LEAPABOVE 2
+#define LEAPBELOW -2
+#define RIGHT 1
+#define LEFT -1
+
+
+chessPosArray*** validKnightMoves()
+{
+    chessPosArray*** board = (chessPosArray***)malloc(BOARD_SIZE * sizeof(chessPosArray**)); //allocate for BOARD_SIZE
+    int i, row, col, count, move, newRow, newCol;
+
+    if (board == NULL) //Allocation checkup.
+    {
+        printf("Allocation error. #01");
+        exit(1);
+    }
+
+    for (i = 0; i < BOARD_SIZE; i++)
+    {
+        board[i] = (chessPosArray**)malloc(BOARD_SIZE * sizeof(chessPosArray*));
+
+        if (board[i] == NULL) //checkup.
+        {
+            printf("Allocation error. #02");
+            exit(1);
+        }
+    }
+
+    int baseMoves[8][2] = { {LEAPABOVE, RIGHT} ,{LEAPABOVE, LEFT} ,{LEAPBELOW, RIGHT}, {LEAPBELOW, LEFT},
+        {RIGHT, LEAPABOVE},{RIGHT, LEAPBELOW}, {LEFT, LEAPABOVE}, {RIGHT, LEAPBELOW} }; //general basic knight moves.
+
+
+    for (row = 0; row < BOARD_SIZE; row++)
+    {
+        for (col = 0; col < BOARD_SIZE; col++)
+        {
+            chessPos* validPositions = (chessPos*)malloc(8 * sizeof(chessPos));
+            count = 0;
+
+            if (validPositions == NULL) //Allocation checkup
+            {
+                printf("Allocation error. #03");
+                exit(1);
+            }
+
+            for (move = 0; move < 8; move++)
+            {
+                newRow = row + baseMoves[move][0];
+                newCol = col + baseMoves[move][1];
+
+                if (newRow >= 0 && newRow < BOARD_SIZE && newCol >= 0 && newCol < BOARD_SIZE)
+                {
+                    validPositions[count][0] = 'A' + newRow;
+                    validPositions[count][1] = '1' + newCol;
+                    count++;
+                }
+            }
+
+            validPositions = (chessPos*)realloc(validPositions, count * sizeof(chessPos));
+
+            chessPosArray* posArray = (chessPosArray*)malloc(sizeof(chessPosArray));
+
+            if (posArray == NULL) // checkup
+            {
+                printf("Allocation error. #04");
+                exit(1);
+            }
+
+            posArray->size = count;
+            posArray->positions = validPositions;
+
+            board[row][col] = posArray;
+        }
+    }
+
+    return board;
+}
+
+void getFreed(chessPosArray*** validKnightMoves) //free...
+{
+    int i, j;
+
+    for (i = 0; i < BOARD_SIZE; i++)
+    {
+        for (j = 0; j < BOARD_SIZE; j++)
+        {
+            free(validKnightMoves[i][j]->positions);
+            free(validKnightMoves[i][j]);
+        }
+        free(validKnightMoves[i]);
+    }
+    free(validKnightMoves);
+}
+
+int main()
+{
+    chessPosArray*** knightMoves = validKnightMoves();
+
+    int row = 4 - 1;
+    int col = 'E' - 'A';  //Shay these are E4, if u wanna select any other, you do not change the minus, because obv 'A' isnt a number.
+    //we substract the ascii value to get to our col position.
+
+    chessPosArray* movesFromE4 = knightMoves[col][row];
+
+    printf("Valid moves from E4:\n");
+
+    for (int i = 0; i < movesFromE4->size; i++)
+    {
+        printf("%c%c\n", movesFromE4->positions[i][0], movesFromE4->positions[i][1]);
+    }
+
+    getFreed(knightMoves);
+    return 0;
+}
