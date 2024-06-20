@@ -1,78 +1,43 @@
-#include "../include/main.h"
-
-
-
-
-//// Function to initialize the path tree with all possible moves for the knight
-//pathTree *initializePathTreeWithRoot(chessPos initialPosition) {
-//    pathTree *ptree = (pathTree *)malloc(sizeof(pathTree));
-//    if (!ptree) {
-//        fprintf(stderr, "Failed to allocate memory for path tree\n");
-//        exit(1);
-//    }
-//
-//    treeNode *rootNode = (treeNode *)malloc(sizeof(treeNode));
-//    if (!rootNode) {
-//        fprintf(stderr, "Failed to allocate memory for root node\n");
-//        free(ptree);
-//        exit(1);
-//    }
-//
-//    // Set the initial position
-//    rootNode->position[0] = initialPosition[0];
-//    rootNode->position[1] = initialPosition[1];
-//    rootNode->nextMoves = NULL;  // This should be populated with the valid moves from this position
-//
-//    // Since we are testing, we can manually set this or use a function to determine valid moves
-//    rootNode->nextMoves = validKnightMoves(); // This would realistically be more complex
-//
-//    ptree->root = rootNode;
-//    return ptree;
-//}
-
-//// Function to display the path
-//void printPath(chessPosList *path) {
-//    if (!path || !path->head) {
-//        printf("No valid path found.\n");
-//        return;
-//    }
-//
-//    chessPosCell *current = path->head;
-//    while (current != NULL) {
-//        printf("(%c, %c) -> ", current->position[0], current->position[1]);
-//        current = current->next;
-//    }
-//    printf("End\n");
-//}
+#include "../include/typedefs.h"
+#include "../include/prototypes.h"
+#include "../include/macros.h"
+#include <stdio.h>
 
 int main() {
-    // Initialize the game state
-    chessPos initialPos = {'A', '1'};
+    chessPos startingPosition;
+    char col;
+    int row;
 
-    // Initialize the path tree
-    pathTree *gameTree = initializePathTreeWithRoot(initialPos);
+    // Prompt user for input and validate it
+    printf("Enter a starting position (e.g., A1): ");
+    scanf(" %c%d", &col, &row);
+    startingPosition[0] = col;
+    startingPosition[1] = '0' + row;  // Convert int row to char
 
-    // Find a path that covers all board
-    chessPosList *resultPath = findKnightPathCoveringAllBoard(gameTree);
+    // Check if the position is valid on a 5x5 chess board
+    if (!isPositionValid(startingPosition)) {
+        printf("Invalid position. Please enter a position like A1, within A-E and 1-5.\n");
+        return 1;
+    }
 
-    // Print the path
-    printPath(resultPath);
+    // Generate all possible knight paths from the starting position
+    pathTree knightPaths = findAllPossibleKnightPaths(&startingPosition);
 
-    // Free resources (not implemented here, should be handled appropriately)
-    // freePathTree(gameTree);
-    // freePath(resultPath);
+    // Find a knight path covering all board
+    chessPosList* completePath = findKnightPathCoveringAllBoard(&knightPaths);
+
+    // Display the complete path if it exists
+    if (completePath != NULL) {
+        printf("A complete path covering all the board was found:\n");
+        display(completePath);  // Assuming display function takes care of printing the entire board
+        freePath(completePath); // Free the path after displaying
+    }
+    else {
+        printf("No complete path covering all the board was found.\n");
+    }
+
+    // Clean up the path tree to avoid memory leaks
+    freePathTree(&knightPaths);
 
     return 0;
-}
-
-getClockWise()
-{
-    {LEAPABOVE, RIGHT}; // ^ ^ ->
-    {RIGHT, LEAPABOVE}; // ^ -> -> 
-    {LEFT, LEAPABOVE};  // v -> ->
-    {LEAPBELOW, RIGHT}; // v v ->
-    {LEAPBELOW, LEFT};  // v v <-
-    {LEFT, LEAPBELOW};  // v <- <-
-    {RIGHT, LEAPBELOW}; // ^ <- <-
-    {LEAPABOVE, LEFT};  // ^ ^ <-
 }
