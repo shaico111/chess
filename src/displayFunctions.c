@@ -77,13 +77,15 @@ void printRow(int* boardRow, int row) {
     // Print the cells in the row
     for (int col = 0; col < BOARD_SIZE; col++) {
         if (boardRow[col] != 0) {
-            printf(" %d ", boardRow[col]);
+            printf("%2d ", boardRow[col]); // Center numbers in a 3-character field
         } else {
-            printf("   ");
-        }        printf("║");
+            printf("   "); // Maintain spacing for empty cells
+        }
+        printf("║");
     }
     printf("\n");
 }
+
 
 void printRowSeparator() {
     // Print the border between rows
