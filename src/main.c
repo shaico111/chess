@@ -1,42 +1,53 @@
 #include "../include/typedefs.h"
 #include "../include/prototypes.h"
-#include "../include/macros.h"
 #include <stdio.h>
 
+/**
+ * @file main.c
+ *
+ * @brief Executes the main program logic to find a complete knight's tour on a 5x5 chess board.
+ *
+ * Initializes the chess board and handles user inputs for the starting position of the knight. It then
+ * validates this starting position, generates all possible knight paths from this position, and attempts
+ * to find a complete path covering the entire board. If a path is found, it is displayed; otherwise, a
+ * message indicating failure is shown. Memory cleanup is performed before program termination to avoid
+ * leaks.
+ */
+
 int main() {
-    chessPos startingPosition;
-    char col;
-    int row;
+    chessPos startingPosition;  ///< Holds the starting position as entered by the user.
+    char startColumn;           ///< Stores the column component of the starting position.
+    int startRow;               ///< Stores the row component of the starting position.
 
     // Prompt user for input and validate it
     printf("Enter a starting position (e.g., A1): ");
-    scanf(" %c%d", &col, &row);
-    startingPosition[0] = col;
-    startingPosition[1] = '0' + row;  // Convert int row to char
+    scanf(" %c%d", &startColumn, &startRow);
+    startingPosition[0] = startColumn;
+    startingPosition[1] = '0' + startRow;  // Convert integer row to character representation.
 
     // Check if the position is valid on a 5x5 chess board
     if (!isPositionValid(startingPosition)) {
         printf("Invalid position. Please enter a position like A1, within A-E and 1-5.\n");
-        return 1;
+        return 1;  // Exit with error code 1 if the position is invalid.
     }
 
     // Generate all possible knight paths from the starting position
-    pathTree knightPaths = findAllPossibleKnightPaths(&startingPosition);
+    pathTree possibleKnightPaths = findAllPossibleKnightPaths(&startingPosition);
 
     // Find a knight path covering all board
-    chessPosList *completePath = findKnightPathCoveringAllBoard(&knightPaths);
+    chessPosList *completeKnightPath = findKnightPathCoveringAllBoard(&possibleKnightPaths);
 
     // Display the complete path if it exists
-    if (completePath != NULL) {
+    if (completeKnightPath != NULL) {
         printf("A complete path covering all the board was found:\n");
-        display(completePath);  // Assuming display function takes care of printing the entire board
-        freePath(completePath); // Free the path after displaying
+        display(completeKnightPath);  // Display the complete path.
+        freePath(completeKnightPath); // Free the path after displaying.
     } else {
         printf("No complete path covering all the board was found.\n");
     }
 
     // Clean up the path tree to avoid memory leaks
-    freePathTree(knightPaths);
+    freePathTree(possibleKnightPaths);
 
-    return 0;
+    return 0;  // Exit with code 0 on successful completion.
 }
