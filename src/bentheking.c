@@ -2,8 +2,7 @@
 #include "../include/prototypes.h"
 #include "../include/macros.h"
 
-pathTree findAllPossibleKnightPaths(chessPos* startingPos)
-{
+pathTree findAllPossibleKnightPaths(chessPos* startingPos) {
     int i, j;
     chessPosArray*** knightMoves = validKnightMoves();
     pathTree tr;
@@ -13,7 +12,7 @@ pathTree findAllPossibleKnightPaths(chessPos* startingPos)
     path[0][0] = startingPos[0][0];
     path[0][1] = startingPos[0][1];
 
-    bool visited[BOARD_SIZE][BOARD_SIZE] = { false };
+    BOOL visited[BOARD_SIZE][BOARD_SIZE] = { FALSE };
 
     buildPathTree(tr.root, knightMoves, visited, path, 1);
 
@@ -31,8 +30,7 @@ pathTree findAllPossibleKnightPaths(chessPos* startingPos)
 
     return tr;
 }
-treeNode* createNode(chessPos pos) //Creates a new tree node.
-{
+treeNode* createNode(chessPos pos) { //Creates a new tree node.
     treeNode* node = (treeNode*)malloc(sizeof(treeNode));
 
     if (node == NULL)
@@ -47,12 +45,10 @@ treeNode* createNode(chessPos pos) //Creates a new tree node.
     node->next_possible_positions.tail = NULL;
     return node;
 }
-void freePathTree(pathTree tree)
-{
+void freePathTree(pathTree tree) {
     freeTreeNode(tree.root);
 }
-void freeTreeNode(treeNode* node)
-{
+void freeTreeNode(treeNode* node) {
     if (node == NULL)
     {
         return;
@@ -69,8 +65,7 @@ void freeTreeNode(treeNode* node)
     }
     free(node);
 }
-void addNodeToList(treeNodeList* lst, treeNode* node) //Adds a node to the linked lst
-{
+void addNodeToList(treeNodeList* lst, treeNode* node) { //Adds a node to the linked lst
     treeNodeListCell* newCell = (treeNodeListCell*)malloc(sizeof(treeNodeListCell));
     if (newCell == NULL)
     {
@@ -91,28 +86,26 @@ void addNodeToList(treeNodeList* lst, treeNode* node) //Adds a node to the linke
         lst->tail = newCell;
     }
 }
-bool posInPath(chessPos* path, unsigned int size, chessPos pos)
-{
+BOOL posInPath(chessPos* path, unsigned int size, chessPos pos) {
     int i;
 
     for (i = 0; i < size; i++)
     {
         if (path[i][0] == pos[0] && path[i][1] == pos[1])
         {
-            return true;
+            return TRUE;
         }
     }
 
-    return false;
+    return FALSE;
 }
-void buildPathTree(treeNode* curr, chessPosArray*** knightMoves, bool visited[BOARD_SIZE][BOARD_SIZE], chessPos* path, unsigned int pathSize)
-{
+void buildPathTree(treeNode* curr, chessPosArray*** knightMoves, BOOL visited[BOARD_SIZE][BOARD_SIZE], chessPos* path, unsigned int pathSize) {
     int row, col, i, newRow, newCol;
     row = curr->position[0] - 'A';
     col = curr->position[1] - '1';
     chessPosArray* possibleMoves = knightMoves[row][col];
 
-    visited[row][col] = true;
+    visited[row][col] = TRUE;
 
     for (i = 0; i < possibleMoves->size; i++)
     {
@@ -130,5 +123,5 @@ void buildPathTree(treeNode* curr, chessPosArray*** knightMoves, bool visited[BO
         }
     }
 
-    visited[row][col] = false;
+    visited[row][col] = FALSE;
 }

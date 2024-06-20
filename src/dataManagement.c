@@ -71,4 +71,10 @@ void RemoveCellFromList(chessPosList *list, chessPosCell *prevCell, chessPosCell
     free(cellToRemove);
 }
 
+// Validating position within chess board limits
+BOOL isPositionValid(chessPos position) {
+    return position[0] >= 'A' && position[0] < 'A' + BOARD_SIZE &&
+           position[1] >= '1' && position[1] < '1' + BOARD_SIZE;
+}
+
 #endif

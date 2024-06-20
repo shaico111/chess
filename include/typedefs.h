@@ -27,20 +27,20 @@ typedef struct _chessPosList {
     chessPosCell *tail; // Tail of the list of positions.
 } chessPosList;
 
-typedef struct _treeNode {
-    chessPos position;                 // Current position of the node.
-    struct _treeNodeList *nextMoves;   // Possible next moves from this position.
+typedef  struct  _treeNodeList {
+    struct _treeNodeListCell  *head;
+    struct _treeNodeListCell  *tail;
+} treeNodeList;
+
+typedef struct _treeNode{
+    chessPos   position;
+    treeNodeList next_possible_positions;
 } treeNode;
 
 typedef struct _treeNodeListCell {
     treeNode *node;                    // Pointer to a treeNode.
     struct _treeNodeListCell *next;    // Next possible position in the list.
 } treeNodeListCell;
-
-typedef struct _treeNodeList {
-    treeNodeListCell *head;            // Head of the list of tree nodes.
-    treeNodeListCell *tail;            // Tail of the list of tree nodes.
-} treeNodeList;
 
 typedef struct _pathTree {
     treeNode *root;  // Root of the path tree.
