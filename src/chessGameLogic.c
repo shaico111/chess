@@ -30,8 +30,16 @@ chessPosArray*** validKnightMoves() {
         }
     }
 
-    int baseMoves[8][2] = { {LEAPABOVE, RIGHT} ,{RIGHT, LEAPABOVE} ,{LEFT, LEAPABOVE}, {LEAPBELOW, RIGHT},
-        {LEAPBELOW, LEFT},{LEFT, LEAPBELOW}, {RIGHT, LEAPBELOW}, {LEAPABOVE, LEFT} }; //general basic knight moves.
+    int baseMoves[8][2] = {
+            {LEAPABOVE, RIGHT},    // Two steps up, one step right
+            {RIGHT, LEAPABOVE},    // One step up, two steps right
+            {RIGHT, LEAPBELOW},    // One step down, two steps right
+            {LEAPBELOW, RIGHT},    // Two steps down, one step right
+            {LEAPBELOW, LEFT},     // Two steps down, one step left
+            {LEFT, LEAPBELOW},     // One step down, two steps left
+            {LEFT, LEAPABOVE},     // One step up, two steps left
+            {LEAPABOVE, LEFT}      // Two steps up, one step left
+    };
 
 
     for (row = 0; row < BOARD_SIZE; row++)

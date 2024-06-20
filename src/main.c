@@ -24,20 +24,19 @@ int main() {
     pathTree knightPaths = findAllPossibleKnightPaths(&startingPosition);
 
     // Find a knight path covering all board
-    chessPosList* completePath = findKnightPathCoveringAllBoard(&knightPaths);
+    chessPosList *completePath = findKnightPathCoveringAllBoard(&knightPaths);
 
     // Display the complete path if it exists
     if (completePath != NULL) {
         printf("A complete path covering all the board was found:\n");
         display(completePath);  // Assuming display function takes care of printing the entire board
         freePath(completePath); // Free the path after displaying
-    }
-    else {
+    } else {
         printf("No complete path covering all the board was found.\n");
     }
 
     // Clean up the path tree to avoid memory leaks
-    freePathTree(&knightPaths);
+    freePathTree(knightPaths);
 
     return 0;
 }

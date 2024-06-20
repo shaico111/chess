@@ -39,6 +39,6 @@ void getFreed(chessPosArray*** validKnightMoves);
 int** InitializeMatrix(int rows, int cols, int value);
 void FreeMatrix(int** board, int rows);
 void RemoveCellFromList(chessPosList *list, chessPosCell *prevCell, chessPosCell *cellToRemove);
-BOOL isPositionValid(chessPos position);
+BOOL isPositionValid(char* startingPosition);
 
 #endif // PROTOTYPES_H
