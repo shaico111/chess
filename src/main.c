@@ -64,3 +64,15 @@ int main() {
 
     return 0;
 }
+
+getClockWise()
+{
+    {LEAPABOVE, RIGHT}; // ^ ^ ->
+    {RIGHT, LEAPABOVE}; // ^ -> -> 
+    {LEFT, LEAPABOVE};  // v -> ->
+    {LEAPBELOW, RIGHT}; // v v ->
+    {LEAPBELOW, LEFT};  // v v <-
+    {LEFT, LEAPBELOW};  // v <- <-
+    {RIGHT, LEAPBELOW}; // ^ <- <-
+    {LEAPABOVE, LEFT};  // ^ ^ <-
+}
